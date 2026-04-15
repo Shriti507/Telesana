@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './healthSummary.module.css';
 import { MdFavorite, MdWaterDrop, MdThermostat, MdMonitorWeight } from 'react-icons/md';
+const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_API || "http://localhost:4000";
 
 const HealthSummaryPage = () => {
   const [healthData, setHealthData] = useState(null);
@@ -14,11 +15,8 @@ const HealthSummaryPage = () => {
 
   const fetchHealthPassbook = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('https://telesana.onrender.com/api/health/passbook', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+      const response = await fetch(`${API_BASE_URL}/api/health/passbook`, {
+        credentials: "include"
       });
 
       if (response.ok) {

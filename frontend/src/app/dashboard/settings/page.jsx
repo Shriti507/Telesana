@@ -3,13 +3,13 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './settings.module.css';
 import toast from 'react-hot-toast';
+import { logout } from '../../../lib/auth';
 
 const SettingsPage = () => {
   const router = useRouter();
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+  const handleLogout = async () => {
+    await logout();
     toast.success('Logged out successfully');
     router.push('/login');
   };

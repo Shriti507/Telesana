@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { apiGet, apiPost } from "../../api/utils.js";
 import styles from "./BookForm.module.css";
+import { getCurrentUser } from "../../../lib/auth";
 
 export default function BookAppointmentForm({ onSuccess }) {
   const [departments, setDepartments] = useState([]);
@@ -40,10 +41,8 @@ export default function BookAppointmentForm({ onSuccess }) {
 
   const submit = async (e) => {
     e.preventDefault();
-    const userStr = localStorage.getItem("user");
-    if (!userStr) return alert("Please login again.");
-    
-    const user = JSON.parse(userStr);
+    const user = await getCurrentUser();
+    if (!user) return alert("Please login again.");
     const userId = user.id;
 
     try {
@@ -56,7 +55,8 @@ export default function BookAppointmentForm({ onSuccess }) {
       }).toString();
 
       const patientRes = await fetch(`http://localhost:3001/api/patient?${queryParams}`, { 
-        method: "GET" 
+        method: "GET",
+        credentials: "include",
       });
       
       const patientData = await patientRes.json();

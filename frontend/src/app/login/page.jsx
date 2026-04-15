@@ -6,12 +6,28 @@ import Link from 'next/link';
 import "./LoginPage.css";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
+import { isAuthenticated } from "../../lib/auth";
+const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_API || "http://localhost:4000";
 
 const LoginPage = () => {
     const router = useRouter();
     const [user, setUser] = useState({ email: "", password: "" });
     const [agree, setAgree] = useState(false);
     const [loading, setLoading] = useState(false);
+
+    React.useEffect(() => {
+        let mounted = true;
+        const checkAuth = async () => {
+            const authenticated = await isAuthenticated();
+            if (mounted && authenticated) {
+                router.replace('/dashboard');
+            }
+        };
+        checkAuth();
+        return () => {
+            mounted = false;
+        };
+    }, [router]);
 
     const onLogin = async (e) => {
         e.preventDefault();
@@ -32,27 +48,25 @@ const LoginPage = () => {
         }
         try {
             setLoading(true);
-            const response = await fetch("https://telesana.onrender.com/api/auth/login", {
+            const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
+                credentials: "include",
                 body: JSON.stringify(user)
             });
-            const data = await response.json();
-            console.log("user logged in");
+            const data = await response.json().catch(() => ({}));
             if (response.ok) {
                 toast.success("Login Successfully");
-                localStorage.setItem("token", data.token);
-                localStorage.setItem("user", JSON.stringify(data.user));
                 router.push('/dashboard');
             } else {
-                toast.error(data.message || "Login Failed");
-                setLoading(false);
+                toast.error(data.message || data.error || `Login Failed (${response.status})`);
             }
         } catch (err) {
-            toast.error("Something went wrong");
-            console.log(err);
+            toast.error(err.message || "Something went wrong");
+            console.log("Login request failed:", err);
+        } finally {
             setLoading(false);
         }
     };

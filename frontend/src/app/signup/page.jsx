@@ -6,11 +6,27 @@ import toast from 'react-hot-toast'
 import "./SignupPage.css"
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
+import { isAuthenticated } from "../../lib/auth";
+const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_API || "http://localhost:4000";
 const SignupPage = () => {
     const router = useRouter()
     const [user,setUser]=useState({email:"",password:"",username:""})
     const [agree,setAgree]=useState(false)
     const [loading,setLoading]=useState(false)
+    React.useEffect(() => {
+        let mounted = true
+        const checkAuth = async () => {
+            const authenticated = await isAuthenticated()
+            if (mounted && authenticated) {
+                router.replace('/dashboard')
+            }
+        }
+        checkAuth()
+        return () => {
+            mounted = false
+        }
+    }, [router])
+
     const onSignup=async(e)=>{
         e.preventDefault()
         const email=user.email.trim()
@@ -18,8 +34,12 @@ const SignupPage = () => {
         const password=user.password.trim()
         const emailRegex=/^[^\s@]+@[^\s@]+\.[^\s@]+$/
         // const mobileRegex=/^[0-9]{10}$/
-        if(!email || !user.username || !user.password){
+        if(!email || !username || !password){
             toast.error("Please fill all the fields")
+            return
+        }
+        if(password.length < 8){
+            toast.error("Password must be at least 8 characters long")
             return
         }
         if(!emailRegex.test(email)){
@@ -32,30 +52,27 @@ const SignupPage = () => {
         }
         try{
             setLoading(true)
-            const response=await fetch("https://telesana.onrender.com/api/auth/signup",{
+            const response=await fetch(`${API_BASE_URL}/api/auth/signup`,{
             method:"POST",
             headers:{
                 "Content-Type":"application/json"
             },
+            credentials: "include",
             body:JSON.stringify({email,username,password})
         })
-
-        const data=await response.json()
-        console.log(data)
+        const data=await response.json().catch(() => ({}))
 
         if(response.ok){
             toast.success("User Created Successfully")
-            localStorage.setItem("token",data.token)
-            localStorage.setItem("user",JSON.stringify(data.user))
             router.push('/dashboard')
         }else{
-            toast.error(data.message || "SignUp Failed")
-            setLoading(false)
+            toast.error(data.message || data.error || `SignUp Failed (${response.status})`)
         }
     }
     catch(err){
-        toast.error("Something went wrong")
-        console.log(err)
+        toast.error(err.message || "Something went wrong")
+        console.log("Signup request failed:", err)
+    } finally {
         setLoading(false)
     }  
 }   

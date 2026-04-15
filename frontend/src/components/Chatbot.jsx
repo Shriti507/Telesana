@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import "./Chatbot.css";
 
 export default function Chatbot() {
+  const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_API || "http://localhost:4000";
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
@@ -37,8 +38,9 @@ export default function Chatbot() {
       const formData = new FormData();
       formData.append("msg", message);
 
-      const response = await fetch("https://telesana.onrender.com/get", {
+      const response = await fetch(`${API_BASE_URL}/get`, {
         method: "POST",
+        credentials: "include",
         body: formData,
       });
 

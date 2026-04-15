@@ -6,6 +6,7 @@ import Navbar from "../ui/dashboard/navbar/navbar";
 import Chatbot from "../../components/Chatbot";       
 import styles from "../ui/dashboard/dashboard.module.css"; 
 import { MdMenu } from "react-icons/md"; 
+import { isAuthenticated, logout } from "../../lib/auth";
 
 const Layout = ({ children }) => {
   const router = useRouter();
@@ -13,12 +14,23 @@ const Layout = ({ children }) => {
   const [isSidebarOpen, setSidebarOpen] = useState(false); 
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      router.replace('/login');
-    } else {
-      setIsAuthorized(true);
-    }
+    let mounted = true;
+    const checkAuth = async () => {
+      const authenticated = await isAuthenticated();
+      if (!mounted) return;
+
+      if (!authenticated) {
+        await logout();
+        router.replace('/login');
+      } else {
+        setIsAuthorized(true);
+      }
+    };
+
+    checkAuth();
+    return () => {
+      mounted = false;
+    };
   }, [router]);
 
   if (!isAuthorized) {

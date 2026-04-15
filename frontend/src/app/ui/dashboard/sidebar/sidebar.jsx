@@ -13,6 +13,7 @@ import {
 } from "react-icons/md";
 
 import DashboardLink from './dashboardLink/dashboardLink';
+import { getCurrentUser } from "../../../../lib/auth";
 
 const dashboardItems = [
   {
@@ -64,8 +65,11 @@ const Sidebar = () => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem('user') || '{}');
-    setUser(userData);
+    const loadCurrentUser = async () => {
+      const currentUser = await getCurrentUser();
+      setUser(currentUser);
+    };
+    loadCurrentUser();
   }, []);
 
   return (

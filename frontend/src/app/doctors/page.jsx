@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import styles from "./doctors.module.css";
+const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_API || "http://localhost:4000";
 
 export default function AllDoctors() {
   const [doctors, setDoctors] = useState([]);
@@ -18,7 +19,9 @@ export default function AllDoctors() {
   const fetchDoctors = async () => {
     try {
       setLoading(true);
-      const response = await fetch("https://telesana.onrender.com/api/doctors");
+      const response = await fetch(`${API_BASE_URL}/api/doctors`, {
+        credentials: "include",
+      });
       if (!response.ok) {
         throw new Error("Failed to fetch doctors");
       }

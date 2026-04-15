@@ -1,6 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const dotenv = require('dotenv')
+const cookieParser = require('cookie-parser')
 
 const authRoutes = require('./routes/authRoutes.js')
 const doctorRoutes = require('./routes/doctorRoutes.js')
@@ -12,20 +13,12 @@ dotenv.config()
 const app = express()
 
 app.use(cors({
-  origin: function(origin, callback){
-    const allowedOrigins = ["http://localhost:3000", "https://telesana-rho.vercel.app"];
-    if(!origin) return callback(null, true); // allow server-to-server or Postman
-    if(allowedOrigins.indexOf(origin) === -1){
-      const msg = `The CORS policy for this site does not allow access from the specified Origin.`;
-      return callback(new Error(msg), false);
-    }
-    return callback(null, true);
-  },
-  methods: ["GET","POST","PUT","DELETE", "OPTIONS"],
+  origin: "http://localhost:3000",
   credentials: true
 }));
 
 app.use(express.json())
+app.use(cookieParser())
 
 app.get("/api/healthcheck", (req, res) => {
     res.status(200).json({ status: "OK", message: "Health check passed" });

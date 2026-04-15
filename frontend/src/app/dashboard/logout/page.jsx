@@ -1,16 +1,20 @@
 "use client";
 import React, { useEffect } from 'react';
 import {useRouter} from 'next/navigation';
+import { logout } from '../../../lib/auth';
 
 const LogoutPage = () => {
     const router=useRouter();
     useEffect(() => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        const timer=setTimeout(() => {
-            router.push('/login');
-        }, 2000);
-        return ()=>clearTimeout(timer);
+        let timer;
+        const signOut = async () => {
+            await logout();
+            timer = setTimeout(() => {
+                router.push('/login');
+            }, 2000);
+        };
+        signOut();
+        return () => clearTimeout(timer);
     }, [router]);
 
     return (

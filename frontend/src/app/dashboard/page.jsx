@@ -6,6 +6,7 @@ import Upcoming from "../ui/dashboard/upcoming/upcoming";
 import styles from "../ui/dashboard/dashboard.module.css";
 import { MdFavorite, MdNightlightRound, MdWaterDrop, MdThermostat } from "react-icons/md";
 import Prescriptions from "../ui/dashboard/prescription/prescription";
+const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_API || "http://localhost:4000";
 
 const Dashboard = () => {
   const [healthData, setHealthData] = useState(null);
@@ -18,11 +19,8 @@ const Dashboard = () => {
 
   const fetchHealthData = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('https://telesana.onrender.com/api/health/passbook', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+      const response = await fetch(`${API_BASE_URL}/api/health/passbook`, {
+        credentials: "include"
       });
 
       if (response.ok) {
@@ -36,11 +34,8 @@ const Dashboard = () => {
 
   const fetchAppointments = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:4000/api/appointments', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+      const response = await fetch(`${API_BASE_URL}/api/appointments`, {
+        credentials: "include"
       });
 
       if (response.ok) {

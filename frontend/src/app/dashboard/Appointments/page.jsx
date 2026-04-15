@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './appointments.module.css';
 import toast from 'react-hot-toast';
+const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_API || "http://localhost:4000";
 
 const AppointmentsPage = () => {
   const [appointments, setAppointments] = useState([]);
@@ -60,11 +61,8 @@ const handleSlotClick = (timeSlot) => {
 
   const fetchAppointments = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('https://telesana.onrender.com/api/appointments', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+      const response = await fetch(`${API_BASE_URL}/api/appointments`, {
+        credentials: "include"
       })
 
       if (response.ok) {
@@ -80,11 +78,8 @@ const handleSlotClick = (timeSlot) => {
 
   const fetchDoctors = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:4000/api/doctors', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+      const response = await fetch(`${API_BASE_URL}/api/doctors`, {
+        credentials: "include"
       });
 
       if (response.ok) {
@@ -126,12 +121,11 @@ const handleSlotClick = (timeSlot) => {
     }
 
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:4000/api/appointments', {
+      const response = await fetch(`${API_BASE_URL}/api/appointments`, {
         method: 'POST',
+        credentials: "include",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify(formData)
       });
