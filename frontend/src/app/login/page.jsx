@@ -7,6 +7,7 @@ import "./LoginPage.css";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { isAuthenticated } from "../../lib/auth";
+import { setFrontendAuthCookie } from "../../lib/cookies";
 const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_API || "http://localhost:4000";
 
 const LoginPage = () => {
@@ -56,11 +57,15 @@ const LoginPage = () => {
                 credentials: "include",
                 body: JSON.stringify(user)
             });
-            const data = await response.json().catch(() => ({}));
             if (response.ok) {
+                const data = await response.json().catch(() => ({}));
+                // Set cookie on frontend domain so Next.js middleware can read it
+                // (middleware runs on Vercel edge and can't see the backend's httpOnly cookie)
+                if (data.token) setFrontendAuthCookie(data.token);
                 toast.success("Login Successfully");
                 router.push('/dashboard');
             } else {
+                const data = await response.json().catch(() => ({}));
                 toast.error(data.message || data.error || `Login Failed (${response.status})`);
             }
         } catch (err) {

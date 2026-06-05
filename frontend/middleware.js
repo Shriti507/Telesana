@@ -22,16 +22,22 @@ function isTokenValid(token) {
 }
 
 export function middleware(request) {
-  const token = request.cookies.get("token")?.value;
   const { pathname } = request.nextUrl;
 
+  // Read the FRONTEND-domain cookie (set by the browser after login via document.cookie).
+  // This is "auth_token" — NOT the httpOnly "token" cookie from the backend.
+  // The backend's httpOnly cookie belongs to onrender.com and is invisible here on Vercel edge.
+  const token = request.cookies.get("auth_token")?.value;
+
+  const tokenValid = isTokenValid(token);
+
   console.log(
-    `[Middleware] pathname=${pathname} | hasToken=${!!token} | tokenValid=${isTokenValid(token)}`
+    `[Middleware] pathname=${pathname} | hasToken=${!!token} | tokenValid=${tokenValid}`
   );
 
-  if (pathname.startsWith("/dashboard") && !isTokenValid(token)) {
+  if (pathname.startsWith("/dashboard") && !tokenValid) {
     console.log(
-      `[Middleware] No valid token for ${pathname} → redirecting to /login`
+      `[Middleware]  No valid auth_token → redirecting to /login`
     );
     const loginUrl = new URL("/login", request.url);
     loginUrl.searchParams.set("next", pathname);

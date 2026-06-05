@@ -1,5 +1,7 @@
 "use client";
 
+import { clearFrontendAuthCookie } from "./cookies";
+
 const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_API || "http://localhost:4000";
 
 export async function getCurrentUser() {
@@ -33,7 +35,10 @@ export async function isAuthenticated() {
 }
 
 export async function logout() {
-  console.log("[auth] Calling logout...");
+  console.log("[auth] Logging out...");
+  // Clear the frontend routing cookie (auth_token on vercel.app domain)
+  clearFrontendAuthCookie();
+  // Clear the backend httpOnly cookie (token on onrender.com domain)
   await fetch(`${API_BASE_URL}/api/auth/logout`, {
     method: "POST",
     credentials: "include",

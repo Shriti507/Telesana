@@ -6,7 +6,8 @@ import toast from 'react-hot-toast'
 import "./SignupPage.css"
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import { isAuthenticated } from "../../lib/auth";
+import { isAuthenticated } from "../../lib/auth"
+import { setFrontendAuthCookie } from "../../lib/cookies";
 const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_API || "http://localhost:4000";
 const SignupPage = () => {
     const router = useRouter()
@@ -63,6 +64,9 @@ const SignupPage = () => {
         const data=await response.json().catch(() => ({}))
 
         if(response.ok){
+            // Set cookie on frontend domain so Next.js middleware can read it
+            // (middleware runs on Vercel edge and can't see the backend's httpOnly cookie)
+            if (data.token) setFrontendAuthCookie(data.token)
             toast.success("User Created Successfully")
             router.push('/dashboard')
         }else{

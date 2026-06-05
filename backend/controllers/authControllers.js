@@ -54,7 +54,7 @@ async function signup(req, res) {
         })
         const token=jwt.sign({id:newUser.id},process.env.JWT_SECRET,{expiresIn:TOKEN_EXPIRY})
         setAuthCookie(res, token)
-        return res.status(201).json({message: "Registration successful", user: {id: newUser.id, username: newUser.username, email: newUser.email}})
+        return res.status(201).json({message: "Registration successful", token, user: {id: newUser.id, username: newUser.username, email: newUser.email}})
 
     } catch(error){
         console.error("Signup error:", error)
@@ -90,7 +90,7 @@ async function login(req, res) {
 
         const token = jwt.sign({id: existingUser.id}, process.env.JWT_SECRET, {expiresIn: TOKEN_EXPIRY})
         setAuthCookie(res, token)
-        return res.status(200).json({message: "Login successful", user: {id: existingUser.id, username: existingUser.username, email: existingUser.email}})
+        return res.status(200).json({message: "Login successful", token, user: {id: existingUser.id, username: existingUser.username, email: existingUser.email}})
 
     } catch(error){
         console.error(error)
