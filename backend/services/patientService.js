@@ -1,5 +1,4 @@
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
+const prisma = require("../utils/prisma.js");
 
 const findPatientByUserId = async (userId) => {
   return prisma.patient.findUnique({

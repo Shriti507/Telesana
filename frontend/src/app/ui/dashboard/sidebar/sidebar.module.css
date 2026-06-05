@@ -1,116 +1,175 @@
+/* =============================================
+   SIDEBAR — Premium Dark Gradient Design
+   ============================================= */
+
 .container {
-  position: sticky;
-  top: 40px;
   display: flex;
-  flex-direction: column !important; 
-  height: 90vh;
-  background-color: #337af5; 
-  border-radius: 24px;
-  padding: 24px;
-  box-shadow: 0 10px 30px rgba(51, 122, 245, 0.3);
+  flex-direction: column;
+  height: 100vh;
+  padding: 28px 20px;
   overflow-y: auto;
   color: white;
-  transition: all 0.3s ease;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.15) transparent;
+  position: sticky;
+  top: 0;
 }
 
+.container::-webkit-scrollbar {
+  width: 4px;
+}
+.container::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.15);
+  border-radius: 4px;
+}
+
+/* ── Logo area ── */
+.logoArea {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 32px;
+  padding: 0 8px;
+}
+
+.logoText {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+}
+
+.logoDot {
+  color: #93c5fd;
+}
+
+/* ── User section ── */
 .user {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 16px;
+  gap: 12px;
+  padding: 14px 16px;
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(5px);
-  margin-bottom: 32px;
-  flex-shrink: 0; 
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(8px);
+  margin-bottom: 28px;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: background 0.2s;
 }
 
 .user:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.18);
 }
 
 .userImage {
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid rgba(255,255,255,0.8);
-  width: 50px; 
-  height: 50px;
-  min-width: 50px;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
 }
 
 .userDetail {
   display: flex;
   flex-direction: column;
-  white-space: nowrap;
   overflow: hidden;
 }
 
 .username {
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: #ffffff;
-  letter-spacing: 0.3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .userEmail {
-  font-size: 0.75rem;
-  color: #e0f2fe; 
-  opacity: 0.9;
+  font-size: 0.72rem;
+  color: #bfdbfe;
+  opacity: 0.85;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
+/* ── Category label ── */
 .cat {
-  color: #dbeafe; 
+  color: #93c5fd;
   font-weight: 700;
-  font-size: 0.75rem;
-  margin: 20px 0 10px 12px;
+  font-size: 0.68rem;
+  margin: 20px 0 8px 8px;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  display: block; 
+  letter-spacing: 1.5px;
+  display: block;
   width: 100%;
 }
 
-
+/* ── Nav list ── */
 .list {
   list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 5px; 
+  gap: 2px;
   width: 100%;
 }
 
 .list li {
-  padding: 12px;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  width: 100%;
   display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 100%; 
   flex-direction: column;
 }
 
-.list li:hover {
-  background-color: rgba(255, 255, 255, 0.15);
+/* ── Spacer at bottom ── */
+.spacer {
+  flex: 1;
 }
 
-.list li:active, 
-.list li:focus {
-  background-color: rgba(255, 255, 255, 0.25) !important;
-  color: white !important;
+/* ── Bottom help card ── */
+.helpCard {
+  margin-top: 24px;
+  padding: 16px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  text-align: center;
 }
 
+.helpCard p {
+  font-size: 0.8rem;
+  color: #bfdbfe;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
 
+.helpBtn {
+  display: inline-block;
+  padding: 8px 18px;
+  background: rgba(255, 255, 255, 0.18);
+  color: white;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.2);
+  transition: background 0.2s;
+  text-decoration: none;
+}
+
+.helpBtn:hover {
+  background: rgba(255, 255, 255, 0.28);
+}
+
+/* ── Mobile ── */
 @media (max-width: 768px) {
   .container {
     height: 100vh;
-    border-radius: 0;
-    box-shadow: none;
-    padding: 20px;
+    padding: 24px 18px;
+    position: relative;
     top: 0;
-    flex-direction: column !important;
-    justify-content: flex-start;
   }
 }

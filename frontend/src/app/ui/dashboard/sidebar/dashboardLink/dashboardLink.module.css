@@ -1,37 +1,51 @@
+/* =============================================
+   DASHBOARD LINK — Premium Active State
+   ============================================= */
+
 .container {
-  padding: 16px 20px;
+  padding: 11px 16px;
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin: 8px 0;
+  gap: 11px;
+  margin: 3px 0;
   border-radius: 12px;
-  color: #e0f2fe; 
+  color: rgba(255, 255, 255, 0.72);
   background-color: transparent;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   font-weight: 500;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   text-decoration: none;
   border: 1px solid transparent;
+  width: 100%;
+}
+
+.container svg {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  transition: color 0.2s;
 }
 
 .container:hover {
   background-color: rgba(255, 255, 255, 0.1);
   color: #ffffff;
-  padding-left: 24px; 
+  border-color: rgba(255, 255, 255, 0.08);
+  transform: translateX(3px);
 }
+
 .active {
-  background-color: #ffffff;
-  color: #337af5 ; 
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.2);
   font-weight: 700;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
 }
 
 .active svg {
-  color: #337af5; 
+  color: #93c5fd;
 }
 
 .active:hover {
-  padding-left: 20px;
-  background-color: #ffffff;
+  transform: none;
+  background: rgba(255, 255, 255, 0.22);
 }

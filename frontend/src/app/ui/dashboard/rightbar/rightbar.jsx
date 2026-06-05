@@ -1,47 +1,66 @@
 'use client';
 import { useState } from 'react';
 import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css'; 
+import 'react-calendar/dist/Calendar.css';
 import styles from './rightbar.module.css';
-import { MdNotifications, MdEvent } from "react-icons/md";
+import { MdNotifications, MdEvent, MdMedication } from "react-icons/md";
+
+const reminders = [
+  {
+    id: 1,
+    title: 'Take Antibiotics',
+    time: 'After Lunch — 2:00 PM',
+    icon: <MdMedication />,
+    color: 'linear-gradient(135deg, #f87171, #ef4444)',
+  },
+  {
+    id: 2,
+    title: 'Book Follow-up',
+    time: 'Before Friday',
+    icon: <MdEvent />,
+    color: 'linear-gradient(135deg, #3b6ef8, #6366f1)',
+  },
+  {
+    id: 3,
+    title: 'Blood Pressure Check',
+    time: 'Tomorrow, 9:00 AM',
+    icon: <MdNotifications />,
+    color: 'linear-gradient(135deg, #f59e0b, #f97316)',
+  },
+];
 
 const Rightbar = () => {
   const [date, setDate] = useState(new Date());
 
   return (
     <div className={styles.container}>
-      
-      <div className={styles.item}>
-        <Calendar 
-            onChange={setDate} 
-            value={date} 
-            className={styles.calendar}
-            locale="en-US"
+      {/* Calendar */}
+      <div className={styles.calendarCard}>
+        <Calendar
+          onChange={setDate}
+          value={date}
+          className={styles.calendar}
+          locale="en-US"
         />
       </div>
 
-      <div className={styles.item}>
-        <h3 className={styles.title}>Reminders</h3>
-        
-        <div className={styles.notification}>
-          <div className={styles.iconContainer} style={{ backgroundColor: '#f87171' }}>
-             <MdNotifications />
+      {/* Reminders */}
+      <div className={styles.remindersCard}>
+        <h3 className={styles.sectionTitle}>Reminders</h3>
+        {reminders.map((r) => (
+          <div className={styles.notification} key={r.id}>
+            <div
+              className={styles.iconContainer}
+              style={{ background: r.color }}
+            >
+              {r.icon}
+            </div>
+            <div className={styles.text}>
+              <span className={styles.notifTitle}>{r.title}</span>
+              <span className={styles.notifTime}>{r.time}</span>
+            </div>
           </div>
-          <div className={styles.text}>
-             <span className={styles.notifTitle}>Take Antibiotics</span>
-             <span className={styles.notifTime}>After Lunch (2:00 PM)</span>
-          </div>
-        </div>
-
-        <div className={styles.notification}>
-          <div className={styles.iconContainer} style={{ backgroundColor: '#337af5' }}>
-             <MdEvent />
-          </div>
-          <div className={styles.text}>
-             <span className={styles.notifTitle}>Book Follow-up</span>
-             <span className={styles.notifTime}>Before Friday</span>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );

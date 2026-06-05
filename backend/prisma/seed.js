@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
@@ -187,8 +188,13 @@ const doctors = [
 ];
 
 async function main() {
+  const cleanDoctors = doctors.map(doc => ({
+    ...doc,
+    doctor_name: doc.doctor_name.replace(/^Dr\.\s+/, "")
+  }));
+
   await prisma.doctor.createMany({
-    data: doctors,
+    data: cleanDoctors,
   });
 
   console.log("Doctors seeded successfully!");

@@ -10,6 +10,7 @@ import {
   MdPeople,
   MdCalendarMonth,
   MdNotifications,
+  MdHeadsetMic,
 } from "react-icons/md";
 
 import DashboardLink from './dashboardLink/dashboardLink';
@@ -17,7 +18,7 @@ import { getCurrentUser } from "../../../../lib/auth";
 
 const dashboardItems = [
   {
-    title: "User",
+    title: "Main",
     list: [
       {
         title: "Dashboard",
@@ -44,12 +45,11 @@ const dashboardItems = [
         path: "/dashboard/Appointments",
         icon: <MdSchedule />,
       },
-
     ],
   },
 
   {
-    title: "Settings",
+    title: "Preferences",
     list: [
       {
         title: "Settings",
@@ -74,19 +74,29 @@ const Sidebar = () => {
 
   return (
     <div className={styles.container}>
+      {/* Logo */}
+      <div className={styles.logoArea}>
+        <span className={styles.logoText}>
+          Tele<span className={styles.logoDot}>sana</span>
+        </span>
+      </div>
+
+      {/* User card */}
       <div className={styles.user}>
         <Image
           className={styles.userImage}
           src="/noavatar.png"
-          alt=""
-          width="50"
-          height="50"
+          alt="User avatar"
+          width={44}
+          height={44}
         />
         <div className={styles.userDetail}>
           <span className={styles.username}>{user?.username || 'User'}</span>
-          <span className={styles.userEmail}>{user?.email || ''}</span>
+          <span className={styles.userEmail}>{user?.email || 'user@telesana.com'}</span>
         </div>
       </div>
+
+      {/* Nav items */}
       <ul className={styles.list}>
         {dashboardItems.map((cat) => (
           <li key={cat.title}>
@@ -98,6 +108,16 @@ const Sidebar = () => {
         ))}
       </ul>
 
+      <div className={styles.spacer} />
+
+      {/* Help card */}
+      <div className={styles.helpCard}>
+        <p>Need support or have questions?</p>
+        <a href="/contact" className={styles.helpBtn}>
+          <MdHeadsetMic style={{ verticalAlign: 'middle', marginRight: 4 }} />
+          Get Help
+        </a>
+      </div>
     </div>
   );
 };

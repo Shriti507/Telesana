@@ -1,10 +1,12 @@
 "use client";
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import styles from './appointments.module.css';
 import toast from 'react-hot-toast';
 const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_API || "http://localhost:4000";
 
 const AppointmentsPage = () => {
+  const router = useRouter();
   const [appointments, setAppointments] = useState([]);
   const [doctors, setDoctors] = useState([]);
   const [showBookingForm, setShowBookingForm] = useState(false);
@@ -137,6 +139,7 @@ const handleSlotClick = (timeSlot) => {
         setShowBookingForm(false);
         setFormData({ doctorId: '', mode: 'VIDEO', appointmentTime: '' });
         fetchAppointments();
+        router.push('/dashboard');
       } else {
         toast.error(data.message || 'Failed to book appointment');
       }

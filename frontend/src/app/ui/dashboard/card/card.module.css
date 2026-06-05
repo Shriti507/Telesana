@@ -1,86 +1,129 @@
+/* =============================================
+   HEALTH METRIC CARD — Premium Gradient Design
+   ============================================= */
+
 .container {
-  background-color: #ffffff;
-  padding: 24px;
-  border-radius: 20px; 
+  background: #ffffff;
+  padding: 16px 18px;
+  border-radius: 16px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 8px;
   cursor: pointer;
   width: 100%;
-  border: 1px solid #f1f5f9;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03); 
-  transition: all 0.3s ease;
+  border: 1.5px solid #e8eeff;
+  box-shadow: 0 4px 24px rgba(59, 110, 248, 0.06);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   position: relative;
   overflow: hidden;
 }
 
-.container:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 24px rgba(51, 122, 245, 0.1);
-  border-color: #e0f2fe;
-}
-
-.container::before {
+/* Decorative gradient blob */
+.container::after {
   content: '';
   position: absolute;
-  top: -50px;
-  right: -50px;
+  top: -30px;
+  right: -30px;
   width: 100px;
   height: 100px;
-  background: radial-gradient(circle, rgba(51, 122, 245, 0.05) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(59, 110, 248, 0.1) 0%, transparent 70%);
   border-radius: 50%;
-  transition: transform 0.5s ease;
+  transition: transform 0.5s ease, opacity 0.3s;
+  opacity: 0.6;
 }
 
-.container:hover::before {
-  transform: scale(1.5);
+.container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 40px rgba(59, 110, 248, 0.14);
+  border-color: #c7d7fd;
+}
+
+.container:hover::after {
+  transform: scale(2);
+  opacity: 1;
+}
+
+/* Top row: icon + trend */
+.topRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
-  background-color: #f0f9ff; 
-  color: #337af5;
-}
-
-.texts {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  font-size: 22px;
+  background: linear-gradient(135deg, #e0e9ff 0%, #c7d7fd 100%);
+  color: #3b6ef8;
+  flex-shrink: 0;
   z-index: 1;
 }
 
+.trend {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  z-index: 1;
+}
+
+.trendPositive {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.trendNegativeWarning {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.trendNegative {
+  background: #fee2e2;
+  color: #ef4444;
+}
+
+/* Text area */
+.texts {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 1;
+  position: relative;
+}
+
 .title {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
-  color: #64748b; 
+  color: #94a3b8;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
 }
 
 .value {
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 800;
-  color: #1e293b; 
+  color: #1e293b;
   letter-spacing: -0.5px;
+  line-height: 1;
 }
 
 .detail {
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 500;
   color: #94a3b8;
   display: flex;
   align-items: center;
   gap: 6px;
+  margin-top: 2px;
 }
 
 .positive {
-  color: #16a34a; 
+  color: #16a34a;
   background: #dcfce7;
   padding: 2px 8px;
   border-radius: 10px;
@@ -89,7 +132,7 @@
 }
 
 .negative {
-  color: #ef4444; 
+  color: #ef4444;
   background: #fee2e2;
   padding: 2px 8px;
   border-radius: 10px;

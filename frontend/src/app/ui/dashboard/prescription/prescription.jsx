@@ -7,7 +7,7 @@ const prescriptions = [
     dosage: "500mg",
     frequency: "2x Daily",
     refills: "2 Left",
-    status: "active", 
+    status: "active",
   },
   {
     id: 2,
@@ -15,7 +15,7 @@ const prescriptions = [
     dosage: "10mg",
     frequency: "1x Daily",
     refills: "Refill Now",
-    status: "warning", 
+    status: "warning",
   },
   {
     id: 3,
@@ -30,7 +30,9 @@ const prescriptions = [
 const Prescriptions = () => {
   return (
     <div className={styles.container}>
-      <h2 className={styles.title}>Active Prescriptions</h2>
+      <div className={styles.header}>
+        <h2 className={styles.title}>Active Prescriptions</h2>
+      </div>
       <table className={styles.table}>
         <thead>
           <tr>
@@ -43,7 +45,12 @@ const Prescriptions = () => {
         <tbody>
           {prescriptions.map((med) => (
             <tr key={med.id}>
-              <td className={styles.medicine}>{med.name}</td>
+              <td>
+                <div className={styles.medicine}>
+                  <span className={styles.medicineDot} />
+                  {med.name}
+                </div>
+              </td>
               <td className={styles.text}>{med.dosage}</td>
               <td className={styles.text}>{med.frequency}</td>
               <td>
