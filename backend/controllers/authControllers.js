@@ -6,11 +6,16 @@ const prisma =require('../utils/prisma.js')
 const TOKEN_EXPIRY = '7d'
 const COOKIE_MAX_AGE = 7 * 24 * 60 * 60 * 1000
 
+const IS_PRODUCTION = process.env.NODE_ENV === "production";
+
 function setAuthCookie(res, token) {
+    // sameSite: "none" is required for cross-origin cookie (Vercel frontend → Render backend)
+    // secure: true is mandatory when sameSite: "none" — only in production (HTTPS)
+    // In local dev (http://localhost) we use sameSite: "lax" so the browser stores the cookie
     res.cookie("token", token, {
         httpOnly: true,
-        secure: true,
-        sameSite: "none",
+        secure: IS_PRODUCTION,
+        sameSite: IS_PRODUCTION ? "none" : "lax",
         maxAge: COOKIE_MAX_AGE
     })
 }
@@ -113,10 +118,11 @@ async function me(req, res) {
 }
 
 function logout(req, res) {
+    // Must match the same attributes used when setting the cookie
     res.clearCookie("token", {
         httpOnly: true,
-        secure: true,
-        sameSite: "none"
+        secure: IS_PRODUCTION,
+        sameSite: IS_PRODUCTION ? "none" : "lax"
     })
     return res.status(200).json({ message: "Logged out successfully" })
 }

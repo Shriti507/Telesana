@@ -24,13 +24,16 @@ const Layout = ({ children }) => {
   useEffect(() => {
     let mounted = true;
     const checkAuth = async () => {
+      console.log("[Dashboard Layout] Checking authentication...");
       const authenticated = await isAuthenticated();
       if (!mounted) return;
 
       if (!authenticated) {
+        console.log("[Dashboard Layout]  Not authenticated → logging out + redirecting to /login");
         await logout();
         router.replace('/login');
       } else {
+        console.log("[Dashboard Layout] Authenticated → rendering dashboard");
         setIsAuthorized(true);
       }
     };

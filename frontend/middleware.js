@@ -25,12 +25,20 @@ export function middleware(request) {
   const token = request.cookies.get("token")?.value;
   const { pathname } = request.nextUrl;
 
+  console.log(
+    `[Middleware] pathname=${pathname} | hasToken=${!!token} | tokenValid=${isTokenValid(token)}`
+  );
+
   if (pathname.startsWith("/dashboard") && !isTokenValid(token)) {
+    console.log(
+      `[Middleware] No valid token for ${pathname} → redirecting to /login`
+    );
     const loginUrl = new URL("/login", request.url);
     loginUrl.searchParams.set("next", pathname);
     return NextResponse.redirect(loginUrl);
   }
 
+  console.log(`[Middleware] Access granted to ${pathname}`);
   return NextResponse.next();
 }
 
